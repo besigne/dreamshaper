@@ -1,0 +1,18 @@
+services:
+
+  db:
+    image: mysql
+    container_name: dreamshaper_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: math
+      MYSQL_DATABASE: dreamshaper
+      MYSQL_USER: matheus
+      MYSQL_PASSWORD: math
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
