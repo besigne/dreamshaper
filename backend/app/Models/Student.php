@@ -18,12 +18,12 @@ class Student extends Model
         'cpf',
     ];
 
-    public static function index(): Collection|Student
+    public function index(): Collection|Student
     {
         return Student::all();
     }
 
-    public static function createStudent(Request $request): Student|null
+    public function createStudent(Request $request): Student|null
     {
         $data = $request->validate([
             'name' => 'required|string',
@@ -35,14 +35,14 @@ class Student extends Model
 
     }
 
-    public static function readStudent($id): Student|null
+    public function readStudent($id): Student|null
     {
         return Student::find($id);
     }
 
 
 
-    public static function updateStudent(Request $request, $id): Student
+    public function updateStudent(Request $request, $id): Student
     {
 
         $student = Student::findOrFail($id);
@@ -57,7 +57,7 @@ class Student extends Model
         return $student;
     }
 
-    public static function deleteStudent($id): void
+    public function deleteStudent($id): void
     {
         $student = Student::findOrFail($id);
         $student->delete();

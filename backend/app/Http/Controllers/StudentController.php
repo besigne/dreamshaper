@@ -19,8 +19,8 @@ class StudentController extends Controller
     {
         try {
 
-            $student = Student::createStudent(($request));
-            return response()->json($student, 201);
+            $student = new Student();
+            return response()->json($student->createStudent($request), 201);
 
         } catch (ValidationException $e) {
 
@@ -33,16 +33,16 @@ class StudentController extends Controller
 
     public function readStudent(Request $request): JsonResponse
     {
-        $student = Student::readStudent($request->id);
-        return response()->json($student, 200);
+        $student = new Student();
+        return response()->json($student->readStudent($request->id), 200);
     }
 
     public function updateStudent(Request $request, $id): JsonResponse
     {
         try {
 
-            $student = Student::updateStudent($request, $id);
-            return response()->json($student, 200);
+            $student = new Student();
+            return response()->json($student->updateStudent($request, $id), 200);
 
         } catch (ValidationException $e) {
 
@@ -55,7 +55,8 @@ class StudentController extends Controller
 
     public function deleteStudent($id): JsonResponse
     {
-        Student::deleteStudent($id);
+        $student = new Student();
+        $student->deleteStudent($id);
         return response()->json([], 204);
     }
 }

@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 
 class Course extends Model
@@ -18,17 +19,19 @@ class Course extends Model
         'duration_hours',
     ];
 
-    public static function index(): Collection|Course
+    public function index(Request $request): LengthAwarePaginator
     {
-        return Course::all();
+            $perPage = $request->get('per_page', 10);
+
+        return Course::paginate($perPage);
     }
 
-    public static function readCourse($id): Course|null
+    public function readCourse($id): Course|null
     {
         return Course::find($id);
     }
 
-    public static function createCourse(Request $request): Course|null
+    public function createCourse(Request $request): Course|null
     {
         $data = $request->validate([
             'name' => 'required|string',
@@ -39,7 +42,7 @@ class Course extends Model
         return $course;
     }
 
-    public static function updateCourse(Request $request, $id): Course
+    public function updateCourse(Request $request, $id): Course
     {
 
         $course = Course::findOrFail($id);
@@ -54,7 +57,7 @@ class Course extends Model
         return $course;
     }
 
-    public static function deleteCourse($id): void
+    public function deleteCourse($id): void
     {
         $course = Course::findOrFail($id);
         $course->delete();

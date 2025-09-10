@@ -10,18 +10,18 @@ use App\Models\Course;
 
 class CourseController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $course = Course::index();
-        return response()->json($course, 200);
+        $course = new Course();
+        return response()->json($course->index($request), 200);
     }
 
     public function createCourse(Request $request): JsonResponse
     {
         try {
 
-            $course = Course::createCourse(($request));
-            return response()->json($course, 201);
+            $course = new Course();
+            return response()->json($course->createCourse($request), 201);
 
         } catch (ValidationException $e) {
 
@@ -34,16 +34,16 @@ class CourseController extends Controller
 
     public function readCourse(Request $request): JsonResponse
     {
-        $course = Course::readCourse($request->id);
-        return response()->json($course, 200);
+        $course = new Course();
+        return response()->json($course->readCourse($request->id), 200);
     }
 
     public function updateCourse(Request $request, $id): JsonResponse
     {
         try {
 
-            $course = Course::updateCourse($request, $id);
-            return response()->json($course, 200);
+            $course = new Course();
+            return response()->json($course->updateCourse($request, $id), 200);
 
         } catch (ValidationException $e) {
 
@@ -56,7 +56,8 @@ class CourseController extends Controller
 
     public function deleteCourse($id): JsonResponse
     {
-        Course::deleteCourse($id);
+        $course = new Course();
+        $course->deleteCourse($id);
         return response()->json([], 204);
     }
 

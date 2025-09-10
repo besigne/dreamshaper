@@ -19,8 +19,8 @@ class EnrollmentController extends Controller
     {
         try {
 
-            $enrollment = Enrollment::createEnrollment($request);
-            return response()->json($enrollment, 201);
+            $enrollment = new Enrollment();
+            return response()->json($enrollment->createEnrollment($request), 201);
 
         } catch (ValidationException $e) {
 
@@ -35,8 +35,8 @@ class EnrollmentController extends Controller
     {
         try {
 
-            $enrollment = Enrollment::updateProgress($request, $id);
-            return response()->json($enrollment, 200);
+            $enrollment = new Enrollment();
+            return response()->json($enrollment->updateProgress($request, $id), 200);
 
         } catch (ValidationException $e) {
             return response()->json([

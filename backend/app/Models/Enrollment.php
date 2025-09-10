@@ -20,12 +20,12 @@ class Enrollment extends Model
         'student_id',
     ];
 
-    public static function index(): Collection|Enrollment
+    public function index(): Collection|Enrollment
     {
         return Enrollment::all();
     }
 
-    public static function createEnrollment(Request $request): Enrollment
+    public function createEnrollment(Request $request): Enrollment
     {
         $validated = $request->validate([
             'course_id' => 'required|exists:courses,id',
@@ -42,7 +42,7 @@ class Enrollment extends Model
         return Enrollment::create($validated);
     }
 
-    public static function updateProgress(Request $request, $id): Enrollment
+    public function updateProgress(Request $request, $id): Enrollment
     {
 
         $enrollment = Enrollment::findOrFail($id);
