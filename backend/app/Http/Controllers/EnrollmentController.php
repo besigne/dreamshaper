@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EnrollmentRequest;
+use App\Models\Student;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -15,20 +17,14 @@ class EnrollmentController extends Controller
         return response()->json($enrollment, 200);
     }
 
-    public function createEnrollment(Request $request): JsonResponse
+    public function createEnrollment(EnrollmentRequest $request): JsonResponse
     {
-        try {
+        $enrollment = Enrollment::create($request->validated());
+        return response()->json([
+            'message' => 'Enrollment created succesfully',
+            'data' => $enrollment
+        ], 201);
 
-            $enrollment = new Enrollment();
-            return response()->json($enrollment->createEnrollment($request), 201);
-
-        } catch (ValidationException $e) {
-
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors' => $e->errors(),
-            ]);
-        }
     }
 
     public function updateProgress(Request $request, $id): JsonResponse

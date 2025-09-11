@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Http\Requests\EnrollmentRequest;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Collection;
@@ -25,21 +26,9 @@ class Enrollment extends Model
         return Enrollment::all();
     }
 
-    public function createEnrollment(Request $request): Enrollment
+    public function createEnrollment(EnrollmentRequest $request): Enrollment
     {
-        $validated = $request->validate([
-            'course_id' => 'required|exists:courses,id',
-            'student_id' => 'required|exists:students,id',
-            'progress_percentage' => 'required|integer|min:0|max:100',
-            'enrollment_date' => 'nullable|date',
-            'completion_date' => 'nullable|date',
-        ]);
-
-        if (!isset($validated['enrollment_date'])) {
-            $validated['enrollment_date'] = now();
-        }
-
-        return Enrollment::create($validated);
+        return Enrollment::create($request->all());
     }
 
     public function updateProgress(Request $request, $id): Enrollment
