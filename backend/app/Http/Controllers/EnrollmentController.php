@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\EnrollmentRequest;
+use App\Models\Course;
 use App\Models\Student;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Http\JsonResponse;
@@ -40,5 +41,16 @@ class EnrollmentController extends Controller
                 'errors' => $e->errors(),
             ]);
         }
+    }
+
+    public function topCourses(): JsonResponse {
+
+        $courses = Course::withCount('enrollments');
+
+        $topTen = $courses->orderBy('enrollments_count', 'desc')
+        ->limit(10)
+        ->get('id', 'name');
+
+        return response()->json($topTen, 200);
     }
 }

@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('courses')->group(function () {
     Route::get('/', [CourseController::class, 'index']);
     Route::post('/', [CourseController::class, 'createCourse']);
+    Route::get('/count', [CourseController::class, 'totalCourses']);
+    Route::get('/top-ten', [EnrollmentController::class, 'topCourses']);
     Route::get('/{id}', [CourseController::class, 'readCourse']);
     Route::put('/{id}', [CourseController::class, 'updateCourse']);
     Route::delete('/{id}', [CourseController::class, 'deleteCourse']);
@@ -16,6 +18,7 @@ Route::prefix('courses')->group(function () {
 Route::prefix('students')->group(function () {
     Route::get('/', [StudentController::class, 'index']);
     Route::post('/', [StudentController::class, 'createStudent']);
+    Route::get('/count', [StudentController::class,'totalStudents']);
     Route::get('/{id}', [StudentController::class, 'readStudent']);
     Route::put('/{id}', [StudentController::class, 'updateStudent']);
     Route::delete('/{id}', [StudentController::class, 'deleteStudent']);

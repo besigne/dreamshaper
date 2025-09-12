@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
@@ -12,7 +13,7 @@ use Illuminate\Http\Request;
 class Course extends Model
 {
     use HasFactory;
-    
+
     protected $fillable = [
         'name',
         'description',
@@ -21,7 +22,7 @@ class Course extends Model
 
     public function index(Request $request): LengthAwarePaginator
     {
-            $perPage = $request->get('per_page', 10);
+        $perPage = $request->get('per_page', 10);
 
         return Course::paginate($perPage);
     }
@@ -34,7 +35,7 @@ class Course extends Model
     public function createCourse(Request $request): Course|null
     {
         $data = $request->validate([
-            'name' => 'required|string',
+            'name' => 'required|string|unique:courses,name',
             'description' => 'nullable|string',
             'duration_hours' => 'required|integer'
         ]);
@@ -71,5 +72,10 @@ class Course extends Model
     public function findAllStudents($id): Collection|Student
     {
         return $this->students()->where('courses.id', $id)->get();
+    }
+
+    public function enrollments(): HasMany
+    {
+        return $this->hasMany(Enrollment::class);
     }
 }

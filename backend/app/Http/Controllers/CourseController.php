@@ -67,4 +67,9 @@ class CourseController extends Controller
         $students = $search->students;
         return response()->json($students, 200);
     }
+
+    public function totalCourses(): JsonResponse {
+        $courses = Course::all();
+        return response()->json(["total_courses" => $courses->count()], 200);
+    }
 }

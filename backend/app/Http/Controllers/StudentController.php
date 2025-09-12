@@ -9,10 +9,10 @@ use App\Models\Student;
 
 class StudentController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Request $request): JsonResponse
     {
-        $student = Student::index();
-        return response()->json($student, 200);
+        $student = new Student(); 
+        return response()->json($student->index($request), 200);
     }
 
     public function createStudent(Request $request): JsonResponse
@@ -58,5 +58,10 @@ class StudentController extends Controller
         $student = new Student();
         $student->deleteStudent($id);
         return response()->json([], 204);
+    }
+
+    public function totalStudents(): JsonResponse {
+        $student = Student::all();
+        return response()->json(["total_students" => $student->count()], 200);
     }
 }

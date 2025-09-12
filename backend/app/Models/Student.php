@@ -4,9 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class Student extends Model
 {
@@ -18,16 +19,18 @@ class Student extends Model
         'cpf',
     ];
 
-    public function index(): Collection|Student
+    public function index(Request $request): LengthAwarePaginator
     {
-        return Student::all();
+        $perPage = $request->get('per_page', 10);
+
+        return Student::paginate($perPage);
     }
 
     public function createStudent(Request $request): Student|null
     {
         $data = $request->validate([
             'name' => 'required|string',
-            'email' => 'required|email|unique:students,email',
+            'email' => ['required', 'email', Rule::unique('students', 'email')],
             'cpf' => 'required|string|unique:students,cpf',
         ]);
         $student = Student::create($data);
