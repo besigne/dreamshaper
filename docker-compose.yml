@@ -1,8 +1,8 @@
 services:
 
-  db:
+  dreamshaper-db:
     image: mysql
-    container_name: dreamshaper_db
+    container_name: dreamshaper-db
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: math
@@ -13,6 +13,29 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+
+  dreamshaper-backend:
+    build: ./backend
+    container_name: dreamshaper-backend
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: dreamshaper-db
+      DB_PORT: 3306
+      DB_DATABASE: dreamshaper
+      DB_USERNAME: matheus
+      DB_PASSWORD: math
+    ports:
+      - 8000:8000
+    depends_on:
+      - dreamshaper-db
+
+  dreamshaper-frontend:
+    build: ./frontend
+    container_name: dreamshaper-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - dreamshaper-backend
 
 volumes:
   mysql_data:
